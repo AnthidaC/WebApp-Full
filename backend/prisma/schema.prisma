@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Type {
+  typeId Int    @id @default(autoincrement())
+  name   String
+  menus  Menu[]
+
+  @@map("type")
+}
+
+model Menu {
+  menuId       Int     @id @default(autoincrement())
+  name         String
+  price        Float
+  isBestSeller Boolean @default(false)
+  typeId       Int
+  type         Type    @relation(fields: [typeId], references: [typeId], onDelete: Cascade)
+
+  @@map("menu")
+}
