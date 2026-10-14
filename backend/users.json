@@ -33,12 +33,5 @@
     "email": "Danny@gmail.com",
     "password": "password",
     "role": "user"
-  },
-  {
-    "id": 1791946493712,
-    "username": "testuser",
-    "email": "test@example.com",
-    "password": "123",
-    "role": "user"
   }
 ]
