@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import typeRouter from './routes/type';
 import menuRouter from './routes/menu';
+import authRouter from './routes/auth';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/type', typeRouter);
 app.use('/api/menu', menuRouter);
 
@@ -21,8 +23,8 @@ app.get('/api/health', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Backend Server running on http://localhost:${PORT}`);
-  console.log(`📍 Routes:`);
+  console.log(`Backend Server running on http://localhost:${PORT}`);
+  console.log(`Routes:`);
   console.log(`   - GET/POST/DELETE  http://localhost:${PORT}/api/type`);
   console.log(`   - GET/POST/PUT/DELETE http://localhost:${PORT}/api/menu`);
 });

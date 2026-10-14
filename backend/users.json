@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "username": "John",
+    "email": "john@gmail.com",
+    "password": "password",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "username": "Ann",
+    "email": "Ann@gmail.com",
+    "password": "password",
+    "role": "user"
+  },
+  {
+    "id": 3,
+    "username": "Bob",
+    "email": "Bob@gmail.com",
+    "password": "password",
+    "role": "user"
+  },
+  {
+    "id": 4,
+    "username": "Cate",
+    "email": "Cate@gmail.com",
+    "password": "password",
+    "role": "user"
+  },
+  {
+    "id": 5,
+    "username": "Danny",
+    "email": "Danny@gmail.com",
+    "password": "password",
+    "role": "user"
+  },
+  {
+    "id": 1791946493712,
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "123",
+    "role": "user"
+  }
+]

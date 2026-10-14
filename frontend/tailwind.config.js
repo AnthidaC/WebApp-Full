@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        prompt: ['Prompt', 'sans-serif'],
+        kanit: ['Kanit', 'sans-serif'],
+        sarabun: ['Sarabun', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

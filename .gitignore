@@ -17,6 +17,7 @@ dist/
 build/
 backend/dist/
 frontend/dist/
+*.tsbuildinfo
 
 # Prisma & Database Files
 *.db
