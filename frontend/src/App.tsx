@@ -57,11 +57,13 @@ export default function App() {
   // States for "todo authen" (Register -> Login -> Home with Roles)
   // ----------------------------------------------------
   const [authenPageView, setAuthenPageView] = useState<'register' | 'login' | 'home'>('login');
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>({
-    id: 1,
-    username: 'John, Doe',
-    email: 'john@gmail.com',
-    role: 'admin'
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {
+    try {
+      const saved = localStorage.getItem('auth_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
   });
   const [adminSubView, setAdminSubView] = useState<'menu' | 'users' | 'type'>('menu');
 
@@ -223,6 +225,7 @@ export default function App() {
 
       const user: AuthUser = res.data.user;
       setCurrentUser(user);
+      localStorage.setItem('auth_user', JSON.stringify(user));
       showToast(`🎉 เข้าสู่ระบบสำเร็จ! บทบาท: ${user.role.toUpperCase()}`, 'success');
       setAuthenPageView('home');
       setAdminSubView('menu');
@@ -238,24 +241,29 @@ export default function App() {
   const setRole = (role: 'guest' | 'user' | 'admin') => {
     if (role === 'guest') {
       setCurrentUser(null);
+      localStorage.removeItem('auth_user');
       setAuthenPageView('home');
       showToast('🌐 สลับเป็นโหมด: Guest mode (ผู้เยี่ยมชม)', 'info');
     } else if (role === 'user') {
-      setCurrentUser({
+      const u: AuthUser = {
         id: 2,
         username: 'Ann, Dalton',
         email: 'Ann@gmail.com',
         role: 'user'
-      });
+      };
+      setCurrentUser(u);
+      localStorage.setItem('auth_user', JSON.stringify(u));
       setAuthenPageView('home');
       showToast('👤 สลับเป็นโหมด: User mode (Ann, Dalton)', 'success');
     } else {
-      setCurrentUser({
+      const u: AuthUser = {
         id: 1,
         username: 'John, Doe',
         email: 'john@gmail.com',
         role: 'admin'
-      });
+      };
+      setCurrentUser(u);
+      localStorage.setItem('auth_user', JSON.stringify(u));
       setAuthenPageView('home');
       setAdminSubView('menu');
       showToast('👑 สลับเป็นโหมด: Admin mode (John, Doe)', 'success');
@@ -265,6 +273,7 @@ export default function App() {
   // Logout from Todo Authen
   const handleLogout = () => {
     setCurrentUser(null);
+    localStorage.removeItem('auth_user');
     setAuthenPageView('login');
     showToast('ออกจากระบบเรียบร้อยแล้ว', 'info');
   };
@@ -399,9 +408,14 @@ export default function App() {
   // Update User Role (Admin permission in Todo Authen)
   const handleUpdateRole = async (userId: number, newRole: string) => {
     try {
-      await axios.put(`/api/auth/users/${userId}/role`, { role: newRole });
+      const res = await axios.put(`/api/auth/users/${userId}/role`, { role: newRole });
       showToast(`เปลี่ยนสิทธิ์เป็น ${newRole} สำเร็จ!`, 'success');
       await fetchUsers();
+      if (currentUser && currentUser.id === userId) {
+        const updated = { ...currentUser, role: newRole as 'admin' | 'user' };
+        setCurrentUser(updated);
+        localStorage.setItem('auth_user', JSON.stringify(updated));
+      }
     } catch (err) {
       showToast('เกิดข้อผิดพลาดในการเปลี่ยนสิทธิ์', 'error');
     }
