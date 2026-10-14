@@ -1743,12 +1743,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-3 mt-8">
-        <div className="max-w-5xl mx-auto px-4 text-center text-xs text-slate-400">
-          React + TypeScript + Tailwind CSS + Prisma + Express MySQL API
-        </div>
-      </footer>
     </div>
   );
 }
