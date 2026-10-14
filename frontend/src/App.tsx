@@ -55,16 +55,9 @@ export default function App() {
 
   // ----------------------------------------------------
   // States for "todo authen" (Register -> Login -> Home with Roles)
-  // ----------------------------------------------------
-  const [authenPageView, setAuthenPageView] = useState<'register' | 'login' | 'home'>('login');
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {
-    try {
-      const saved = localStorage.getItem('auth_user');
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
+  // Default entry starts in Home guest mode
+  const [authenPageView, setAuthenPageView] = useState<'register' | 'login' | 'home'>('home');
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [adminSubView, setAdminSubView] = useState<'menu' | 'users' | 'type'>('menu');
 
   // Register Form states
@@ -274,8 +267,8 @@ export default function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem('auth_user');
-    setAuthenPageView('login');
-    showToast('ออกจากระบบเรียบร้อยแล้ว', 'info');
+    setAuthenPageView('home');
+    showToast('ออกจากระบบแล้ว กลับสู่ Home (Guest mode)', 'info');
   };
 
   // Trigger Edit Mode & Bounce data into the first input box
@@ -480,7 +473,10 @@ export default function App() {
 
             {/* ปุ่ม 2: todo authen */}
             <button
-              onClick={() => setMainMode('authen')}
+              onClick={() => {
+                setMainMode('authen');
+                setAuthenPageView('home');
+              }}
               className={`px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 ${
                 mainMode === 'authen'
                   ? 'bg-indigo-500 text-white font-bold shadow-xs'
@@ -628,7 +624,11 @@ export default function App() {
 
             {/* Card 2: todo authen */}
             <div 
-              onClick={() => setMainMode('authen')}
+              onClick={() => {
+                setMainMode('authen');
+                setAuthenPageView('home');
+                setCurrentUser(null);
+              }}
               className="bg-white rounded-3xl border-2 border-indigo-200 p-8 shadow-sm hover:shadow-xl hover:border-indigo-500 transition-all cursor-pointer group flex flex-col justify-between relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 bg-indigo-600 text-white text-[11px] font-bold px-3 py-1 rounded-bl-xl">
